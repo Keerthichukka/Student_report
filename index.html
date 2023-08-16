@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add New Student</title>
+    <style>
+        /* Add your CSS styles here */
+    </style>
+</head>
+<body>
+    <h2>Add New Student</h2>
+    <form id="studentForm" action="store_student.php" method="POST">
+        <!-- Add your student form fields here -->
+    </form>
+
+    <h2>Student List</h2>
+    <form id="filterForm" action="display_students.php" method="GET">
+        <label for="filterGrade">Filter by Grade:</label>
+        <input type="text" id="filterGrade" name="grade">
+        <input type="submit" value="Filter">
+    </form>
+
+    <div id="studentTable"></div>
+
+    <button onclick="printTable()">Print</button>
+
+    <script>
+        function printTable() {
+            window.print();
+        }
+
+        function displayStudents() {
+            const filterGrade = document.getElementById("filterGrade").value;
+            const url = `display_students.php?grade=${filterGrade}`;
+            const xhr = new XMLHttpRequest();
+
+            xhr.open("GET", url, true);
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    document.getElementById("studentTable").innerHTML = xhr.responseText;
+                }
+            };
+
+            xhr.send();
+        }
+
+        document.getElementById("filterForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            displayStudents();
+        });
+
+        displayStudents();
+    </script>
+</body>
+</html>
